@@ -9,3 +9,5 @@ cp .bashrc ~
 cp .bash_aliases ~
 
 . ~/.bashrc
+
+echo "As shellscript runs on another instance of bash, you have to restart your terminal to use new configs."
