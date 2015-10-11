@@ -1,7 +1,6 @@
 # general purposes
-mkdircd() {
-    mkdir $1
-    cd $1
+mcd() {
+    mkdir $1 && cd $1
 }
 
 function extract() {
@@ -25,7 +24,6 @@ function extract() {
     fi
 }
 
-alias mcd=mkdircd
 alias ports='netstat -tulanp'
 alias nginx='sudo /usr/local/se/apps/nginx/nginx -s'
 alias ..="cd .."
