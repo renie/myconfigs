@@ -34,8 +34,16 @@ else
 	wget https://sublime.wbond.net/Package%20Control.sublime-package
 	cp Package\ Control.sublime-package ~/.config/sublime-text-3/Installed\ Packages
 	echo "Sublime Text installed."
-	echo "Sublime asks for restarting itself for installing everything ¯\_(ツ)_/¯."
 fi
+
+
+###
+# Copying Sublime settings
+###
+backToScriptDir
+cp Package\ Control.sublime-settings ~/.config/sublime-text-3/Packages/User/
+cp Preferences.sublime-settings ~/.config/sublime-text-3/Packages/User/
+echo "Sublime asks for restarting itself for installing everything ¯\_(ツ)_/¯."
 
 
 ###
@@ -56,11 +64,14 @@ fi
 
 
 ###
-# Copying Sublime settings
+# Grunt and bower installing
 ###
-backToScriptDir
-cp Package\ Control.sublime-settings ~/.config/sublime-text-3/Packages/User/
-cp Preferences.sublime-settings ~/.config/sublime-text-3/Packages/User/
+echo "Installing Grunt."
+sudo npm install -g grunt-cli
+echo "Grunt installed."
+echo "Installing Bower."
+sudo npm install -g bower
+echo "Bower installed."
 
 
 ###
@@ -72,10 +83,14 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 cp ~/.bashrc ~/.bashrc__bkp
+echo "Your bashrc was backed up at ~/.bashrc__bkp ."
 cp .bashrc ~
+echo "Your bashrc updated."
 cp .bash_aliases ~
+echo "Your bash_aliases updated."
 
 . ~/.bashrc
+echo "Your bashrc executed."
 
 
 ###
