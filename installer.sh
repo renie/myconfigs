@@ -41,7 +41,7 @@ fi
 ###
 # Node installing
 ###
-if ! verifyCommandExistence node; then
+if verifyCommandExistence node; then
 	echo "NodeJS is already installed."
 else
 	cd ~/Downloads
@@ -49,8 +49,8 @@ else
 	tar xvzf node-v4.2.0-linux-x64.tar.gz
 	sudo cp -rp node-v4.2.0-linux-x64 /usr/local/
 	sudo mv /usr/local/node-v4.2.0-linux-x64 /usr/local/node_v420
-	sudo ln -s /usr/local/bin/node /usr/local/node_v420/bin/node
-	sudo ln -s /usr/local/bin/npm /usr/local/node_v420/bin/npm
+	sudo ln -s /usr/local/node_v420/bin/node /usr/local/bin/node
+	sudo ln -s /usr/local/node_v420/bin/npm /usr/local/bin/npm
 	echo "NodeJS 4.0.2 installed."
 fi
 
