@@ -1,4 +1,5 @@
 #!/bin/sh
+inittime=$(date +%s)
 
 echo "Running installer"
 
@@ -91,6 +92,11 @@ echo "Your bash_aliases updated."
 
 . ~/.bashrc
 echo "Your bashrc executed."
+
+finaltime=$(date +%s)
+t=$(($finaltime-$inittime))
+
+echo "Time spent: $t ms"
 
 
 ###
