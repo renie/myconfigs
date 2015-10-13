@@ -93,6 +93,10 @@ echo "Your bash_aliases updated."
 . ~/.bashrc
 echo "Your bashrc executed."
 
+
+###
+# Ending timer
+###
 finaltime=$(date +%s)
 t=$(($finaltime-$inittime))
 
