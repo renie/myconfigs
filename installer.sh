@@ -63,6 +63,7 @@ done
 printf "Running installer\n\n"
 
 
+
 ###
 # Sublime installing
 ###
@@ -144,6 +145,7 @@ printf "Your bash_aliases was updated.\n"
 
 . ~/.bashrc
 printf "Your bashrc was executed.\n\n"
+
 
 
 ###
