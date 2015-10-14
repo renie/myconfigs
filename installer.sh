@@ -145,6 +145,10 @@ printf "Your bash_aliases was updated.\n"
 . ~/.bashrc
 printf "Your bashrc was executed.\n\n"
 
+
+###
+# Ending timer
+###
 finaltime=$(date +%s)
 t=$(($finaltime-$inittime))
 
