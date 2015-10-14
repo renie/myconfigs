@@ -27,16 +27,21 @@ verifyCommandExistence(){
 # Variables
 ###
 nodeversion="4.2.0"
+nodearch="64"
 while [ "$1" != "" ]; do
-    case $1 in
-        -n | --nodeversion )   shift
-            nodeversion=$1
-        ;;
-        * )
+	case $1 in
+		--nodeversion )   shift
+			nodeversion=$1
+		;;
+		--nodearch )   shift
+			nodearch=$1
+		;;
+
+		* )
 			echo "Invalid param: $1"
-            exit 1
-    esac
-    shift
+			exit 1
+	esac
+	shift
 done
 
 
@@ -68,11 +73,11 @@ echo "Sublime asks for restarting itself for installing everything ¯\_(ツ)_/¯
 # Node installing
 ###
 nodev=${nodeversion//./""}
-nodefile="node-v$nodeversion-linux-x64.tar.gz"
-nodepath="node-v$nodeversion-linux-x64"
+nodefile="node-v$nodeversion-linux-x$nodearch.tar.gz"
+nodepath="node-v$nodeversion-linux-x$nodearch"
 nodeurl="https://nodejs.org/dist/v$nodeversion/$nodefile"
 
-if verifyCommandExistence node; then
+if ! verifyCommandExistence node; then
 	echo "NodeJS is already installed."
 else
 	cd ~/Downloads
