@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 inittime=$(date +%s)
 
 echo "Running installer"
@@ -21,6 +21,23 @@ backToScriptDir(){
 verifyCommandExistence(){
 	return $(which $1 >/dev/null)
 }
+
+
+###
+# Variables
+###
+nodeversion="4.2.0"
+while [ "$1" != "" ]; do
+    case $1 in
+        -n | --nodeversion )   shift
+            nodeversion=$1
+        ;;
+        * )
+			echo "Invalid param: $1"
+            exit 1
+    esac
+    shift
+done
 
 
 ###
@@ -50,17 +67,22 @@ echo "Sublime asks for restarting itself for installing everything ¯\_(ツ)_/¯
 ###
 # Node installing
 ###
+nodev=${nodeversion//./""}
+nodefile="node-v$nodeversion-linux-x64.tar.gz"
+nodepath="node-v$nodeversion-linux-x64"
+nodeurl="https://nodejs.org/dist/v$nodeversion/$nodefile"
+
 if verifyCommandExistence node; then
 	echo "NodeJS is already installed."
 else
 	cd ~/Downloads
-	wget https://nodejs.org/dist/v4.2.0/node-v4.2.0-linux-x64.tar.gz
-	tar xvzf node-v4.2.0-linux-x64.tar.gz
-	sudo cp -rp node-v4.2.0-linux-x64 /usr/local/
-	sudo mv /usr/local/node-v4.2.0-linux-x64 /usr/local/node_v420
-	sudo ln -s /usr/local/node_v420/bin/node /usr/local/bin/node
-	sudo ln -s /usr/local/node_v420/bin/npm /usr/local/bin/npm
-	echo "NodeJS 4.0.2 installed."
+	wget $nodeurl
+	tar xvzf $nodefile
+	sudo cp -rp $nodepath /usr/local/
+	sudo mv /usr/local/$nodepath /usr/local/node_v$nodev
+	sudo ln -s /usr/local/node_v$nodev/bin/node /usr/local/bin/node
+	sudo ln -s /usr/local/node_v$nodev/bin/npm /usr/local/bin/npm
+	echo "NodeJS $nodeversion installed."
 fi
 
 
@@ -96,7 +118,7 @@ echo "Your bashrc executed."
 finaltime=$(date +%s)
 t=$(($finaltime-$inittime))
 
-echo "Time spent: $t ms"
+echo "Time spent: $t s"
 
 
 ###
