@@ -7,7 +7,8 @@ Use **-h** parameter for checking this help below on your shell.
 
 Allowed parametes:
 
-	--nodeversion		Version of NodeJS you want. Check available versions on https://nodejs.org/en/download/releases/
+	--nodeversion		Version of NodeJS you want. Check available versions on
+						https://nodejs.org/en/download/releases/
 						**(io.js not included)**
 						(default: 4.0.2)
 
