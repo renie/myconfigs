@@ -79,11 +79,23 @@ printf "Running installer\n\n"
 
 
 
-###
-# Sublime installing
-###
 if [ $OS == "D" ]; then
 
+	###
+	# Git installing
+	###
+	printf "GIT install...\n"
+
+	if verifyCommandExistence git; then
+		printf "Git is already installed.\n"
+	else
+		sudo apt-get install git
+		printf "GIT installed.\n\n"
+	fi
+
+	###
+	# Sublime installing
+	###
 	printf "Sublime install...\n"
 
 	if verifyCommandExistence subl; then
@@ -120,7 +132,7 @@ nodefile="node-v$nodeversion-linux-x$nodearch.tar.gz"
 nodepath="node-v$nodeversion-linux-x$nodearch"
 nodeurl="https://nodejs.org/dist/v$nodeversion/$nodefile"
 
-if ! verifyCommandExistence node; then
+if verifyCommandExistence node; then
 	printf "NodeJS is already installed.\n\n"
 else
 	cd ~/Downloads
