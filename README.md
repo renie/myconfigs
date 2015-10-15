@@ -13,4 +13,4 @@ Allowed parametes:
 						(default: 4.0.2)
 
 	--nodearch			Architeture of NodeJS you want
-						(default: 64)
+						(default: your system architeture)
