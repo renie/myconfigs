@@ -28,10 +28,25 @@ verifyCommandExistence(){
 
 
 ###
+# Storing system info
+###
+ARCH=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
+
+if [ -f /etc/debian_version ]; then
+	OS="D"
+elif [ -f /etc/redhat-release ]; then
+	OS="R"
+else
+	OS=$(uname -s)
+fi
+
+
+
+###
 # Setting variables
 ###
 nodeversion="4.2.0"
-nodearch="64"
+nodearch=$ARCH
 while [ "$1" != "" ]; do
 	case $1 in
 		--nodeversion )   shift
@@ -67,27 +82,32 @@ printf "Running installer\n\n"
 ###
 # Sublime installing
 ###
-printf "Sublime install...\n"
-if verifyCommandExistence subl; then
-	printf "Sublime is already installed.\n"
+if [ $OS == "D" ]; then
+
+	printf "Sublime install...\n"
+
+	if verifyCommandExistence subl; then
+		printf "Sublime is already installed.\n"
+	else
+		cd ~/Downloads
+		wget http://c758482.r82.cf2.rackcdn.com/sublime-text_build-3083_amd64.deb
+		sudo dpkg -i sublime-text_build-3083_amd64.deb
+		wget https://sublime.wbond.net/Package%20Control.sublime-package
+		cp Package\ Control.sublime-package ~/.config/sublime-text-3/Installed\ Packages
+		printf "Sublime Text installed.\n"
+	fi
+
+	###
+	# Copying Sublime settings
+	###
+	backToScriptDir
+	cp Package\ Control.sublime-settings ~/.config/sublime-text-3/Packages/User/
+	cp Preferences.sublime-settings ~/.config/sublime-text-3/Packages/User/
+	printf "Sublime asks for restarting itself for installing everything ¯\_(ツ)_/¯.\n\n"
+
 else
-	cd ~/Downloads
-	wget http://c758482.r82.cf2.rackcdn.com/sublime-text_build-3083_amd64.deb
-	sudo dpkg -i sublime-text_build-3083_amd64.deb
-	wget https://sublime.wbond.net/Package%20Control.sublime-package
-	cp Package\ Control.sublime-package ~/.config/sublime-text-3/Installed\ Packages
-	printf "Sublime Text installed.\n"
+	printf "This script cannot install Sublime in your system yet. For now we just support Debian like systems."
 fi
-
-
-
-###
-# Copying Sublime settings
-###
-backToScriptDir
-cp Package\ Control.sublime-settings ~/.config/sublime-text-3/Packages/User/
-cp Preferences.sublime-settings ~/.config/sublime-text-3/Packages/User/
-printf "Sublime asks for restarting itself for installing everything ¯\_(ツ)_/¯.\n\n"
 
 
 
