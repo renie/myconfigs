@@ -32,3 +32,4 @@ alias ..4="cd ../../../.."
 alias ..5="cd ../../../../.."
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+alias pserver='sudo python -m SimpleHTTPServer'
