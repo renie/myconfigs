@@ -4,6 +4,7 @@ If you want to use this for some reason `¯\_(ツ)_/¯`, please read the install
 
 Use **-h** parameter for checking this help below on your shell.
 
+**Sublime Text will be installed only if you are running this script in a Debian like distro.**
 
 Allowed parametes:
 
