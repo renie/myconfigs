@@ -25,7 +25,6 @@ function extract() {
 }
 
 alias ports='netstat -tulanp'
-alias nginx='sudo /usr/local/se/apps/nginx/nginx -s'
 alias ..="cd .."
 alias ..2="cd ../.."
 alias ..3="cd ../../.."
