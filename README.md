@@ -11,7 +11,7 @@ Allowed parametes:
 	--nodeversion		Version of NodeJS you want. Check available versions on
 						https://nodejs.org/en/download/releases/
 						**(io.js not included)**
-						(default: 4.0.2)
+						(default: 4.2.0)
 
 	--nodearch			Architeture of NodeJS you want
 						(default: your system architeture)
