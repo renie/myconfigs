@@ -1,0 +1,44 @@
+#!/bin/bash
+
+printf "Node manager\n\n"
+
+ARCH=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
+nodeversion="4.2.0"
+nodearch=$ARCH
+while [ "$1" != "" ]; do
+	case $1 in
+		--v )   shift
+			nodeversion=$1
+		;;
+		--a )   shift
+			nodearch=$1
+		;;
+		* )
+			printf "Invalid param: $1\n\n\n"
+			exit 1
+	esac
+	shift
+done
+
+nodev=${nodeversion//./""}
+nodelocal="/usr/local/node_v$nodev"
+
+if [ ! -d "/usr/local/node_v$nodev" ]; then
+	printf "Installing NodeJS $nodeversion.\n\n"
+	nodefile="node-v$nodeversion-linux-x$nodearch.tar.gz"
+	nodepath="node-v$nodeversion-linux-x$nodearch"
+	nodeurl="https://nodejs.org/dist/v$nodeversion/$nodefile"
+
+	cd ~/Downloads
+	wget $nodeurl
+	tar xvzf $nodefile
+	sudo cp -rp $nodepath /usr/local/
+	sudo mv /usr/local/$nodepath /usr/local/node_v$nodev
+else
+	printf "NodeJS $nodeversion already installed. Changing used version.\n\n"
+fi
+
+sudo ln -sf /usr/local/node_v$nodev/bin/node /usr/local/bin/node
+sudo ln -sf /usr/local/node_v$nodev/bin/npm /usr/local/bin/npm
+
+printf "NodeJS $nodeversion in use.\n\n"
