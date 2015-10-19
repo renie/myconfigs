@@ -105,7 +105,13 @@ if [ $OS == "D" ]; then
 		wget http://c758482.r82.cf2.rackcdn.com/sublime-text_build-3083_amd64.deb
 		sudo dpkg -i sublime-text_build-3083_amd64.deb
 		wget https://sublime.wbond.net/Package%20Control.sublime-package
+
+		if [ ! -d ~/.config/sublime-text-3/Installed\ Packages]; then
+			mkdir -p ~/.config/sublime-text-3/Installed\ Packages
+		fi
+
 		cp Package\ Control.sublime-package ~/.config/sublime-text-3/Installed\ Packages
+
 		printf "Sublime Text installed.\n"
 	fi
 
@@ -113,6 +119,10 @@ if [ $OS == "D" ]; then
 	# Copying Sublime settings
 	###
 	backToScriptDir
+	if [ ! -d ~/.config/sublime-text-3/Packages/User/]; then
+		mkdir -p ~/.config/sublime-text-3/Packages/User/
+	fi
+
 	cp Package\ Control.sublime-settings ~/.config/sublime-text-3/Packages/User/
 	cp Preferences.sublime-settings ~/.config/sublime-text-3/Packages/User/
 	printf "Sublime asks for restarting itself for installing everything ¯\_(ツ)_/¯.\n\n"
