@@ -155,6 +155,8 @@ else
 	printf "NodeJS $nodeversion installed.\n\n"
 fi
 
+backToScriptDir
+sudo mv -f nodemanager /usr/local/bin
 
 
 ###
