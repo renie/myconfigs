@@ -2,6 +2,11 @@
 
 printf "Node manager\n\n"
 
+
+
+####
+# Gets variables
+####
 ARCH=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
 nodeversion="4.2.0"
 nodearch=$ARCH
@@ -20,14 +25,29 @@ while [ "$1" != "" ]; do
 	shift
 done
 
+
+
+####
+# Sets node version and path
+####
 nodev=${nodeversion//./""}
 nodelocal="/usr/local/node_v$nodev"
 
+
+
+####
+# Cleans old paths of node on PATH
+####
 cleanpath=$(echo $PATH | sed 's#/usr/local/node[_v0-9]*/bin:##g')
 export PATH=$cleanpath
 
 
+
+####
+# Checks if this node version was downloaded in the past
+####
 if [ ! -d "/usr/local/node_v$nodev" ]; then
+	# download and move this version of node to its final location, if it hasn't been found
 	printf "Installing NodeJS $nodeversion.\n\n"
 	nodefile="node-v$nodeversion-linux-x$nodearch.tar.gz"
 	nodepath="node-v$nodeversion-linux-x$nodearch"
@@ -39,6 +59,7 @@ if [ ! -d "/usr/local/node_v$nodev" ]; then
 	sudo cp -rp $nodepath /usr/local/
 	sudo mv /usr/local/$nodepath /usr/local/node_v$nodev
 else
+	# if the choosen version exists, it removes the reference to the old one on bashrc
 	thisver=$(node -v | sed 's/[v.]//g')
 	thispath="/usr/local/node_v$thisver/bin"
 	sed -i -e "s#export NODE_PATH=/usr/local/node_v$thisver/lib/node_modules##g" ~/.bashrc
@@ -46,13 +67,31 @@ else
 	printf "NodeJS $nodeversion already installed. Changing used version.\n\n"
 fi
 
+
+
+####
+# Creates links for node and NPM
+####
 sudo ln -sf /usr/local/node_v$nodev/bin/node /usr/local/bin/node
 sudo ln -sf /usr/local/node_v$nodev/bin/npm /usr/local/bin/npm
 
+
+
+####
+# Refereces this version paths on bashrc
+####
 sudo echo -e "export NODE_PATH=/usr/local/node_v$nodev/lib/node_modules" >> ~/.bashrc
 sudo echo -e '\nexport PATH=/usr/local/node_v'$nodev'/bin:$PATH' >> ~/.bashrc
 
+
+
+####
+# Updates current shell
+####
 export NODE_PATH=/usr/local/node_v$nodev/lib/node_modules
 export PATH=/usr/local/node_v$nodev/bin:$PATH
+
+
+
 
 printf "NodeJS $nodeversion in use.\n\n"
