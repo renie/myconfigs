@@ -23,6 +23,10 @@ done
 nodev=${nodeversion//./""}
 nodelocal="/usr/local/node_v$nodev"
 
+cleanpath=$(echo $PATH | sed 's#/usr/local/node[_v0-9]*/bin:##g')
+export PATH=$cleanpath
+
+
 if [ ! -d "/usr/local/node_v$nodev" ]; then
 	printf "Installing NodeJS $nodeversion.\n\n"
 	nodefile="node-v$nodeversion-linux-x$nodearch.tar.gz"
@@ -35,10 +39,20 @@ if [ ! -d "/usr/local/node_v$nodev" ]; then
 	sudo cp -rp $nodepath /usr/local/
 	sudo mv /usr/local/$nodepath /usr/local/node_v$nodev
 else
+	thisver=$(node -v | sed 's/[v.]//g')
+	thispath="/usr/local/node_v$thisver/bin"
+	sed -i -e "s#export NODE_PATH=/usr/local/node_v$thisver/lib/node_modules##g" ~/.bashrc
+	sed -i -e 's#export PATH='$thispath':$PATH##g' ~/.bashrc
 	printf "NodeJS $nodeversion already installed. Changing used version.\n\n"
 fi
 
 sudo ln -sf /usr/local/node_v$nodev/bin/node /usr/local/bin/node
 sudo ln -sf /usr/local/node_v$nodev/bin/npm /usr/local/bin/npm
+
+sudo echo -e "export NODE_PATH=/usr/local/node_v$nodev/lib/node_modules" >> ~/.bashrc
+sudo echo -e '\nexport PATH=/usr/local/node_v'$nodev'/bin:$PATH' >> ~/.bashrc
+
+export NODE_PATH=/usr/local/node_v$nodev/lib/node_modules
+export PATH=/usr/local/node_v$nodev/bin:$PATH
 
 printf "NodeJS $nodeversion in use.\n\n"
