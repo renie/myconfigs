@@ -24,6 +24,7 @@ function extract() {
     fi
 }
 
+alias hosts='sudo vim /etc/hosts'
 alias ports='netstat -tulanp'
 alias ..="cd .."
 alias ..2="cd ../.."
