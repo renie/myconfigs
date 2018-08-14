@@ -1,5 +1,42 @@
-parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+git_branch() {
+    git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
+git_status() {
+    local status="$(git status --porcelain 2>/dev/null)"
+    local output=''
+    [[ -n $(egrep '^[MADRC]' <<<"$status") ]] && output="$output [staged +]"
+    [[ -n $(egrep '^.[MD]' <<<"$status") ]] && output="$output [unstaged files !]"
+    [[ -n $(egrep '^\?\?' <<<"$status") ]] && output="$output [untracked files ?]"
+    [[ -n $(git log --branches --not --remotes) ]] && output="${output} [push to remote P]"
+    [[ -n $output ]] && output="| $output "  # separate from branch name
+    echo $output
+}
+
+git_color() {
+    local staged=$([[ $1 =~ \+ ]] && echo yes)
+    local dirty=$([[ $1 =~ [!\?] ]] && echo yes)
+    local needs_push=$([[ $1 =~ P ]] && echo yes)
+    if [[ -n $staged ]] && [[ -n $dirty ]]; then
+        echo -e '\033[1;33m'  # bold yellow
+    elif [[ -n $staged ]]; then
+        echo -e '\033[1;32m'  # bold green
+    elif [[ -n $dirty ]]; then
+        echo -e '\033[1;31m'  # bold red
+    elif [[ -n $needs_push ]]; then
+        echo -e '\033[1;34m' # bold blue
+    else
+        echo -e '\033[1;37m'  # bold white
+    fi
+}
+
+git_prompt() {
+    local branch=$(git_branch)
+    if [[ -n $branch ]]; then
+        local state=$(git_status)
+        local color=$(git_color $state)
+        echo -e "\x01$color\x02 ( $branch $state) \x01\033[00m\x02"  # last bit resets color
+    fi
 }
 
 case $- in
@@ -35,7 +72,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[00;35m\]\w\[\033[00m\]\[\033[01;91m\]$(parse_git_branch)\[\033[00m\]\n\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[00;35m\]\w\[\033[00m\]\[\033[01;91m\]$(git_prompt)\[\033[00m\]\n\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\w \$$(parse_git_branch) '
 fi
